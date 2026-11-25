@@ -12,6 +12,26 @@ app.get("/", (_req, res) => {
 });
 
 // Do not change code above this line
+const dateHandler = (req, res) => {
+    const dateInput = req.params.date;
+
+    const date = dateInput
+        ? new Date(/^\d+$/.test(dateInput) ? Number(dateInput) : dateInput)
+        : new Date();
+
+    if (isNaN(date.getTime())) {
+        return res.json({ error: "Invalid Date" });
+    }
+
+    res.json({
+        unix: date.getTime(),
+        utc: date.toUTCString()
+    });
+};
+
+// API routes (Express 5 compatible)
+app.get("/api", dateHandler);
+app.get("/api/:date", dateHandler);
 
 // Do not change code below this line
 
